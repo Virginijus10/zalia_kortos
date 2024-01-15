@@ -4,7 +4,7 @@ class Card:
 
     def __init__(self, suit: str = '', weight: int = 0, color: str = '', rank: str = ''):
         self.suit = suit
-        self.weight = weight
+        self.weight = weight(rank)
         self.color = color
         self.rank = rank 
         
@@ -40,10 +40,34 @@ class Card:
         return self.weight
        
 
+    def rank(self):
+        card_rank = ['2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K']
+        return card_rank
+
+    def suit(self):
+        card_suit = ['Spades', 'Clubs', 'Hearts', 'Diamonds']
+        return card_suit
+
+    def sign(self):
+        if self.suit == 'Spades':
+            return '\U+2660'
+        if self.suit == 'Clubs':
+            return 'U+2663'
+        if self.suit == 'Hearts':
+            return 'U+2665'
+        if self.suit == 'Diamonds':
+            return 'U+2666'
+    
+    def weight(self, rank):
+        for i, card_rank in enumerate(self.rank(), start=1):
+            if card_rank == rank:
+                return i
+        
+
 
 class Deck:
 
-    def __inir__(self, deck: list = []):
+    def __init__(self, deck: list = []):
         self.deck = deck
 
     def shufle(self):
@@ -77,12 +101,13 @@ class Computer1():
 
 # Kortų kaladė
 # Korta: Objektas (Class)
+# def __init__
 # def rank (2-9, T, J, Q, K, A)
 # def suit (spades, clubs, hearts, diamonds)
 # def sign (suit + rank)
 # def weight
 # Kortų kaladė: Objektas (Class)
-# def cards - kortų sąrašas []
+# def deck - kortų sąrašas []
 # def shuffle
 # def take from top
 # def take from bottom
