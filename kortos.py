@@ -2,61 +2,34 @@ import random
 
 class Card:
 
-    def __init__(self, suit: str = '', weight: int = 0, color: str = '', rank: str = ''):
+    card_rank = [None, None, '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A']
+
+    card_suit = ['Spades', 'Clubs', 'Hearts', 'Diamonds']
+
+    def __init__(self, rank: int = 0, suit: int = 0, weight: int = 0):
+        self.rank = rank
         self.suit = suit
-        self.weight = weight(rank)
-        self.color = color
-        self.rank = rank 
-        
-
-    def rank(self.2-9, T, J, Q, K, A):
-        pass
-
-    def suit(self.spades, clubs, hearts, diamonds):
-        pass
-
-    def sign(self.suit, rank):
-        pass
-
-    def set_weight(self):
-        if self.valid.rank():
-            if self.rank.isdigit():
-                self.weight = int(self.rank)
-            elif self.rank == 'T':
-                self.weight = 10
-            elif self.weight == ['J', 'Q', 'K']:
-                self.weight = 10
-            elif self.weight == 'A':
-                self.weight = 11
-            else:
-               self.weight = 0
-        else:
-            self.weight = 0
-        
-    def get_rank(self):
-        return self.rank
-
-    def get_weight(self):
-        return self.weight
-       
-
-    def rank(self):
-        card_rank = ['2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K']
+        self.weight = weight
+    
+    def __repr__(self):
+        card_print = f'{self.card_rank[self.rank]} of {self.card_suit[self.suit]}'
+        return card_print
+    
+    def rank(self, card_rank):
         return card_rank
-
-    def suit(self):
-        card_suit = ['Spades', 'Clubs', 'Hearts', 'Diamonds']
+    
+    def suit(self, card_suit):
         return card_suit
 
     def sign(self):
         if self.suit == 'Spades':
-            return '\U+2660'
+            return u"\u2660"
         if self.suit == 'Clubs':
-            return 'U+2663'
+            return u'\u2663'
         if self.suit == 'Hearts':
-            return 'U+2665'
+            return u'\u2665'
         if self.suit == 'Diamonds':
-            return 'U+2666'
+            return u'\u2666'
     
     def weight(self, rank):
         for i, card_rank in enumerate(self.rank(), start=1):
@@ -69,19 +42,57 @@ class Deck:
 
     def __init__(self, deck: list = []):
         self.deck = deck
+    
+    def deck_creation(self):
+        self.deck = []
+        for rank in range(2, 15):
+            for suit in range(4):
+                self.deck.append(Card(rank, suit, rank))
+        random.shuffle(self.deck)
 
     def shufle(self):
         random.shuffle(self.deck)
 
     def take_top(self):
-        pass
+        t_card = self.deck.pop(0)
+        print(t_card)
+        return t_card
     
     def take_bottom(self):
-        pass
+        b_card = self.deck.pop(len(self.deck)-1)
+        print(b_card)
+        return b_card
 
     def take_random(self):
-        r_card = random.randint(1, 52)
-        pass
+        r_number = random.randint(0, 52)
+        r_card = self.deck.pop(r_number)
+        print(r_card)
+        return r_card
+
+    def card_weight_check_all(self):
+        for card in self.deck:
+            print(f'{card} - {card.weight}\n')
+        
+    def card_suit_check(self, card1: Card, card2: Card):
+        if card1.suit == card2.suit:
+            return True
+        else:
+            False
+    
+    def card_weight_check(self, card1: Card, card2: Card):
+        if card1.weight == card2.weight:
+            check = 0
+        elif card1.weight > card2.weight:
+            check = card1
+        else:
+            check = card2
+        return check
+
+    def card_weight_modifier(self, suit, value):
+        for card in deck.deck:
+            if card.suit == suit:
+                card.weight += value
+
 
 class GameLogic():
 
@@ -93,10 +104,14 @@ class Computer1():
     def __init__(self):
         pass
 
+deck = Deck()
+deck.deck_creation()
+print(deck.deck)
+deck.take_top()
+deck.take_bottom()
+deck.take_random()
+deck.card_weight_check_all()
 
-
-    def forkinimas(self):
-      pass
 
 
 # Kortų kaladė
