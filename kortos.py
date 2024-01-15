@@ -2,10 +2,44 @@ import random
 
 class Card:
 
-    def __init__(self, suit: str = '', weight: int = 0, color: str = ''):
+    def __init__(self, suit: str = '', weight: int = 0, color: str = '', rank: str = ''):
         self.suit = suit
         self.weight = weight
         self.color = color
+        self.rank = rank 
+        
+
+    def rank(self.2-9, T, J, Q, K, A):
+        pass
+
+    def suit(self.spades, clubs, hearts, diamonds):
+        pass
+
+    def sign(self.suit, rank):
+        pass
+
+    def set_weight(self):
+        if self.valid.rank():
+            if self.rank.isdigit():
+                self.weight = int(self.rank)
+            elif self.rank == 'T':
+                self.weight = 10
+            elif self.weight == ['J', 'Q', 'K']:
+                self.weight = 10
+            elif self.weight == 'A':
+                self.weight = 11
+            else:
+               self.weight = 0
+        else:
+            self.weight = 0
+        
+    def get_rank(self):
+        return self.rank
+
+    def get_weight(self):
+        return self.weight
+       
+
 
 class Deck:
 
