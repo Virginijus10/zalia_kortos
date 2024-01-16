@@ -2,23 +2,23 @@
 import random
 
 class Card:
-    
+
     card_rank = [None, None, '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A']
-    
+
     card_suit = ['Spades', 'Clubs', 'Hearts', 'Diamonds']
 
     def __init__(self, rank: int = 0, suit: int = 0, weight: int = 0):
         self.rank = rank
         self.suit = suit
         self.weight = weight
-
+ 
     def __repr__(self):
         card_print = f'{self.card_rank[self.rank]} of {self.card_suit[self.suit]}'
         return card_print
 
     def rank(self, card_rank):
         return card_rank
-
+   
     def suit(self, card_suit):
         return card_suit
 
@@ -33,13 +33,12 @@ class Card:
             return u'\u2666'
 
     def weight(self, rank):
+
         for i, card_rank in enumerate(self.rank()):
             if card_rank == rank:
                 return i
 
-
-
-class Deck:
+class Deck():
     
     def __init__(self, deck=None):
         self.deck = deck if deck is not None else []
@@ -110,7 +109,7 @@ class GameLogic:
     def power_card(self):
         card_power = self.deck.deck[-1]
         return card_power
-    
+
     def add_card(self, card: Card):
         self.table.append(card)
         print(self.table)
