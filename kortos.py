@@ -94,10 +94,66 @@ class Deck:
                 card.weight += value
 
 
+class Player:
+    
+    def __init__(self, name):
+        self.name = name
+        self.hand = []
+
+    def draw(self, deck, count):
+        self.hand.extend(deck.cards[:count])
+        del deck.cards[:count]
+
+    def play_card(self, table, card):
+        if card in self.hand:
+            table.append(card)
+            self.hand.remove(card)
+            return True
+        else:
+            return False
+             
+    def choose_card_to_play(self, table, trump):
+        playable_cards = self.get_playable_cards(table, trump)
+
+        if playable_cards:
+            better_cards = [card for card in playable_cards if card.rank > table[-1].rank and card.suit == table[-1].suit]
+            if better_cards:
+                return max(better_cards, key=lambda card: self.get_card_rank(card))
+            return min(playable_cards, key=lambda card: self.get_card_rank(card))
+        else:
+            return min(self.hand, key=lambda card: self.get_card_rank(card))
+
+
 class GameLogic():
 
-    def __init__(self):
-        pass
+    def __init__(self, players_count):
+        self.players_count = players_count
+        self.players = [Player(f"Player {i+1}") for i in range(players_count)]
+        self.deck = Deck()
+        self.deck.shuffle()
+        self.table = []
+        self.trump = None
+
+    def deal_cards(self, count):
+        for player in self.players:
+            player.draw(self.deck, count)
+
+    def start_game(self):
+        self.deal_cards(6)
+        self.trump = self.deck.cards.pop(0)
+        self.table.append(self.trump)
+
+    def play_round(self):
+        for player in self.players:
+            card_to_play = self.choose_card_to_play(player)
+            player.play_card(self.table, card_to_play)
+
+    def play_round(self):
+        for player in self.players:
+            card_to_play = self.choose_card_to_play(player)
+            if card_to_play is not None:
+                player.play_card(self.table, card_to_play)
+
 
 class Computer1():
 
