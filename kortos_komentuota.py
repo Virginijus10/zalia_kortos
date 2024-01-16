@@ -1,27 +1,35 @@
-
+# Importuojame integruotą python modulį random, kad galėtume kviesti random modulyje esančias funkcijas.
 import random
 
+# Objektas korta.
 class Card:
-    
+
+# Kintamasis/sąrašas, kuriame nurodyti kortų rangai/reikšmės.
     card_rank = [None, None, '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A']
-    
+
+# Kintamasis/sąrašas, kuriame nurodytos kortų rūšys.
     card_suit = ['Spades', 'Clubs', 'Hearts', 'Diamonds']
 
+# Konstruktorius/metodas __init__, jame nurodyti pradiniai kintamieji: (rank, suit, weight) ir jų atributai: (int = 0).
     def __init__(self, rank: int = 0, suit: int = 0, weight: int = 0):
         self.rank = rank
         self.suit = suit
         self.weight = weight
 
+# Metodas __repr__ reprezentuoja (spausdina) card_print kintamąjame nurodytą tekstą ir laužtiniuose skliaustuose {} nurodytas reikšmes. 
     def __repr__(self):
         card_print = f'{self.card_rank[self.rank]} of {self.card_suit[self.suit]}'
         return card_print
 
+# Metodas rank tiesiogiai grąžina sąrašo card_rank reikšmes.  
     def rank(self, card_rank):
         return card_rank
 
+# Metodas suit tiesiogiai grąžina sąrašo card_suit reikšmes.   
     def suit(self, card_suit):
         return card_suit
 
+ # Metodas sign priskiria kortų rūšim atitinkamus unicode paveikslėlius. 
     def sign(self):
         if self.suit == 'Spades':
             return u"\u2660"
@@ -32,18 +40,23 @@ class Card:
         elif self.suit == 'Diamonds':
             return u'\u2666'
 
+# Metodas naudoja for ciklą, kad priskirtume kortoms taškus.
     def weight(self, rank):
+
+# Ciklas for sunumeruoja self.rank() turinį iteruodamas indeksą (i) ir kintamąjį (card_rank). 
+# Šioje vietoje grąžintą indeksą (i) interpretuojame kaip atitinkamus kortos taškus.
         for i, card_rank in enumerate(self.rank()):
             if card_rank == rank:
                 return i
-
-
-
+        
+# Objektas.
 class Deck:
-    
+
+# Konstruktorius/metodas __init__, jame nurodyti pradiniai kintamieji.
     def __init__(self, deck=None):
         self.deck = deck if deck is not None else []
 
+# Metodas deck_creation sukuria išmaišytą kaladę.
     def deck_creation(self, setting = 6):
         self.deck = []
         for rank in range(setting, 15):
@@ -51,9 +64,11 @@ class Deck:
                 self.deck.append(Card(rank, suit, rank))
         random.shuffle(self.deck)
 
+# Metodas išmaišo kaladę.
     def shuffle(self):
         random.shuffle(self.deck)
 
+# Metodas grąžina kortą paimtą nuo kaladės viršaus.
     def take_top(self):
         if self.deck:
             t_card = self.deck.pop(0)
@@ -62,22 +77,26 @@ class Deck:
         else:
             print("Deck is empty.")
             return None
-            
+          
+# Metodas grąžina kortą paimtą iš kaladės apačios.   
     def take_bottom(self):
         b_card = self.deck.pop(-1)
         print(b_card)
         return b_card
 
+# Metodas grąžina atsitiktinę kortą iš kaladės
     def take_random(self):
         r_number = random.randint(0, len(self.deck)-1)
         r_card = self.deck.pop(r_number)
         print(r_card)
         return r_card
 
+# Metodo ciklas atspausdina visas kaladėje esančias kortas bei jų svorį/taškus.
     def card_weight_check_all(self):
         for card in self.deck:
             print(f'{card} - {card.weight}\n')
-     
+
+# Metodas patikrina ar dviejų kortų rūšis yra vienoda      
     def card_suit_check(self, card1: Card, card2: Card):
         return card1.suit == card2.suit
 
@@ -174,74 +193,6 @@ class Computer:
         return play_card
 
 
-
-class Player:
-    
-    def __init__(self, name):
-        self.name = name
-        self.hand = []
-
-    def draw(self, deck, count):
-        self.hand.extend(deck.cards[:count])
-        del deck.cards[:count]
-
-    def play_card(self, table, card):
-        if card in self.hand:
-            table.append(card)
-            self.hand.remove(card)
-            return True
-        else:
-            return False
-             
-    def choose_card_to_play(self, table, trump):
-        playable_cards = self.get_playable_cards(table, trump)
-
-        if playable_cards:
-            better_cards = [card for card in playable_cards if card.rank > table[-1].rank and card.suit == table[-1].suit]
-            if better_cards:
-                return max(better_cards, key=lambda card: self.get_card_rank(card))
-            return min(playable_cards, key=lambda card: self.get_card_rank(card))
-        else:
-            return min(self.hand, key=lambda card: self.get_card_rank(card))
-
-
-class GameLogic():
-
-    def __init__(self, players_count):
-        self.players_count = players_count
-        self.players = [Player(f"Player {i+1}") for i in range(players_count)]
-        self.deck = Deck()
-        self.deck.shuffle()
-        self.table = []
-        self.trump = None
-
-    def deal_cards(self, count):
-        for player in self.players:
-            player.draw(self.deck, count)
-
-    def start_game(self):
-        self.deal_cards(6)
-        self.trump = self.deck.cards.pop(0)
-        self.table.append(self.trump)
-
-    def play_round(self):
-        for player in self.players:
-            card_to_play = self.choose_card_to_play(player)
-            player.play_card(self.table, card_to_play)
-
-    def play_round(self):
-        for player in self.players:
-            card_to_play = self.choose_card_to_play(player)
-            if card_to_play is not None:
-                player.play_card(self.table, card_to_play)
-
-
-class Computer1():
-
-    def __init__(self):
-        pass
-
-
 player = Player('Bob')
 aran = Computer('Aran')
 player_nr = []
@@ -268,19 +219,3 @@ game.deal_cards()
 print(len(deck.deck))
 print(deck.deck)
 
-
-# UŽDUOTIS:
-# Kortų kaladė
-# Korta: Objektas (Class)
-# def __init__
-# def rank (2-9, T, J, Q, K, A)
-# def suit (spades, clubs, hearts, diamonds)
-# def sign (suit + rank)
-# def weight
-# Kortų kaladė: Objektas (Class)
-# def deck - kortų sąrašas []
-# def shuffle
-# def take from top
-# def take from bottom
-# def take random
-# Mąstom apie žaidimą

@@ -1,6 +1,10 @@
 # zalia_kortos
 2024-01-15 žalia komanda
 
+alpha 0.6
+
+added basic game logic, no game, just deck and play, deal options
+
 alpha 0.51
 
 merge conflict resolved
